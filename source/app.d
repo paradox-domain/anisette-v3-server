@@ -157,7 +157,7 @@ int main(string[] args) {
 			ProvisioningSession provisioningSession = new ProvisioningSession(v1Adi, v1Device);
 			provisioningSession.provision(dsId);
 			log.info("Provisioning done!");
-		} catch (Exception {}
+		} catch (Exception) {}
 	}
 
 	if (skipServerStartup) {
