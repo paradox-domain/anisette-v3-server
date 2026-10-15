@@ -36,7 +36,7 @@ __gshared string libraryPath;
 __gshared string provisioningPath;
 
 enum brandingCode = format!"anisette-v3-server v%s"(provisionVersion);
-enum clientInfo = "<MacBookPro13,2> <macOS;13.1;22C65> <com.apple.AuthKit/1 (com.apple.akd/1.0)>";
+enum clientInfo = "<Pixel 7> <Android;14;UQ1A.240205.002> <com.apple.AuthKit/1 (com.apple.akd/1.0)>";
 enum dsId = -2;
 
 __gshared ADI v1Adi;
@@ -140,13 +140,14 @@ int main(string[] args) {
 
 		import std.random;
 		import std.range;
-		v1Device.serverFriendlyDescription = clientInfo;
 		v1Device.uniqueDeviceIdentifier = randomUUID().toString().toUpper();
 		v1Device.adiIdentifier = (cast(ubyte[]) rndGen.take(2).array()).toHexString().toLower();
 		v1Device.localUserUUID = (cast(ubyte[]) rndGen.take(8).array()).toHexString().toUpper();
 
 		log.info("Machine creation done!");
 	}
+
+	v1Device.serverFriendlyDescription = clientInfo;
 
 	v1Adi.identifier = v1Device.adiIdentifier;
 	if (!v1Adi.isMachineProvisioned(dsId)) {
@@ -156,7 +157,7 @@ int main(string[] args) {
 			ProvisioningSession provisioningSession = new ProvisioningSession(v1Adi, v1Device);
 			provisioningSession.provision(dsId);
 			log.info("Provisioning done!");
-		} catch (Exception) {}
+		} catch (Exception {}
 	}
 
 	if (skipServerStartup) {
@@ -399,7 +400,6 @@ class AnisetteService {
 			socket.send(error.toString());
 			return;
 		}
-
 
 		if (!socket.waitForData(timeout)) {
 			JSONValue timeoutJs = [
